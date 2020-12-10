@@ -58,7 +58,8 @@ if [ $n =  0 ]; then
         read n
     done
 else
-awk -F '$3.eq'
+    echo 'Run x'$n
+    #awk -F '$3.eq'
 fi
 
 #https://www.cyberciti.biz/faq/bsd-appleosx-linux-bash-shell-run-command-n-times/
@@ -73,4 +74,4 @@ done
 
 echo
 echo
-cat $script_output_with_name+++
+cat $script_output_with_name
