@@ -57,6 +57,8 @@ if [ $n =  0 ]; then
         echo 'How many times to run speed test? CTRL-C to cancel'
         read n
     done
+else
+awk -F '$3.eq'
 fi
 
 #https://www.cyberciti.biz/faq/bsd-appleosx-linux-bash-shell-run-command-n-times/
