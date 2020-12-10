@@ -15,12 +15,25 @@ do
     esac
 done
 
+
+
+#https://www.golinuxcloud.com/get-script-name-get-script-path-shell-script/
+script_name1=`basename $0`
+script_path1=$(dirname $(readlink -f $0))
+script_path_with_name="$script_path1/$script_name1"
+script_output_with_name="$script_path1/speedTestCLI.txt"
+
+echo "Script path with name: $script_path_with_name"
+echo "Script output with name: $script_output_with_name"
+echo
+echo
+
 if [ "$find" != "" ]; then
     echo "Searching for"
     echo $find
     echo "..."
-    touch speedTestCLI.txt;
-    grep $find speedTestCLI.txt;
+    touch $script_output_with_name;
+    grep $find $script_output_with_name;
 fi
 
 PKG_INFO_URL="github.com/sivel/speedtest-cli/blob/master/README.rst"
@@ -33,15 +46,6 @@ if [ "" = "$PKG_OK" ]; then
   echo "Please install $REQUIRED_PKG...";
   sudo apt-get install $REQUIRED_PKG
 fi
-
-#https://www.golinuxcloud.com/get-script-name-get-script-path-shell-script/
-script_name1=`basename $0`
-script_path1=$(dirname $(readlink -f $0))
-script_path_with_name="$script_path1/$script_name1"
-script_output_with_name="$script_path1/speedTestCLI.txt"
-
-echo "Script path with name: $script_path_with_name"
-echo "Script output with name: $script_output_with_name"
 
 #https://stackoverflow.com/a/15748003
 if [ $n =  0 ]; then
@@ -67,4 +71,4 @@ done
 
 echo
 echo
-cat $script_output_with_name
+cat $script_output_with_name+++
