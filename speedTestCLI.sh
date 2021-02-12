@@ -1,7 +1,12 @@
 #! /bin/bash
 n=0
 find="";
-
+bint=0
+aint=0
+searchOPTARGS="";
+year="";
+month="";
+command="";
 
 #./speedTestCLI.sh -n 2
 
@@ -10,8 +15,12 @@ while getopts n:f: option
 do
     case "${option}"
     in
-        n) n=${OPTARG};;
-        f) find=${OPTARG};;
+        n) n=${OPTARG};; #Number to loop tests
+        f) find=${OPTARG};; #Item to search for in test history
+        b) bint=${OPTARG};; #test history search display num lines before result
+        a) aint=${OPTARG};; #test history search display num lines after result
+        y) year=${OPTARG};; #year of tests to display
+        m) month=${OPTARG};; #month of tests to display
     esac
 done
 
@@ -31,9 +40,34 @@ echo
 if [ "$find" != "" ]; then
     echo "Searching for"
     echo $find
-    echo "..."
+    echo "...";
     touch $script_output_with_name;
-    grep $find $script_output_with_name;
+    searchOPTARGS="";
+
+    if [$bint != 0]; then
+        $searchOPTARGS = "$searchOPTARGS -B $bint ";
+    fi
+
+    if [$aint != 0]; then
+        $searchOPTARGS = "$searchOPTARGS -A $bint ";
+    fi 
+         
+    grep $searchOPTARGS $find $script_output_with_name;
+fi
+
+#grep -A 3 '20201' SpeedTestBashScript/speedTestCLI.txt | grep -B 3 'Upload' | grep -A 3 'Feb'
+$command = "";
+if [ $year!="" || $month!="" ]; then
+    echo "Listing"
+    echo $year" "
+    echo $month" ";
+    if [ $year!="" ]; then
+        $command="grep -A 3 '$year' $script_output_with_name | "
+    fi
+    $command="$command grep -B 3 'Upload' | "
+    if [ $month!="" ]; then
+        $command="$command grep -A 3 '$month' $script_output_with_name | "
+    fi
 fi
 
 PKG_INFO_URL="github.com/sivel/speedtest-cli/blob/master/README.rst"
