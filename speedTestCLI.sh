@@ -4,6 +4,22 @@ find="";
 
 
 #./speedTestCLI.sh -n 2
+# Change version of speedtest-cli installed to one that connects properly with server
+# https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c get-latest-release
+#
+
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
+
+# Usage
+# $ get_latest_release "creationix/nvm"
+# v0.31.4
+
+# sudo wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O $(which speedtest-cli)
+sudo wget "https://raw.githubusercontent.com/sivel/speedtest-cli/"&& $ get_latest_release "sivel/speedtest-cli" && "/speedtest.py -O $(which speedtest-cli)"
 
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
 while getopts n:f: option
