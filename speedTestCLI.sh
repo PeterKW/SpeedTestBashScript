@@ -1,4 +1,19 @@
 #! /bin/bash
+
+# --2021-08-03 04:46:10--  https://raw.githubusercontent.com/sivel/speedtest-cli/
+# Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+# Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443...
+#  connected.
+# HTTP request sent, awaiting response... 400 Bad Request
+# 2021-08-03 04:46:10 ERROR 400: Bad Request.
+
+# Script path with name: /mnt/p/Documents/GitHub/SpeedTestBashScript/speedTestCLI.sh
+# Script output with name: /mnt/p/Documents/GitHub/SpeedTestBashScript/speedTestCLI.txt
+
+
+# ./speedTestCLI.sh: line 76: [: missing `]'
+# ./speedTestCLI.sh: line 76: !=: command not found
+
 n=0
 find="";
 bint=0
@@ -66,22 +81,22 @@ if [ "$find" != "" ]; then
 
     if [$aint != 0]; then
         $searchOPTARGS = "$searchOPTARGS -A $bint ";
-    fi 
-         
+    fi
+
     grep $searchOPTARGS $find $script_output_with_name;
 fi
 
 #grep -A 3 '20201' SpeedTestBashScript/speedTestCLI.txt | grep -B 3 'Upload' | grep -A 3 'Feb'
-$command = "";
-if [ $year!="" || $month!="" ]; then
+
+if [ $year != "" || $month != "" ]; then
     echo "Listing"
     echo $year" "
     echo $month" ";
-    if [ $year!="" ]; then
+    if [ $year != "" ]; then
         $command="grep -A 3 '$year' $script_output_with_name | "
     fi
     $command="$command grep -B 3 'Upload' | "
-    if [ $month!="" ]; then
+    if [ $month != "" ]; then
         $command="$command grep -A 3 '$month' $script_output_with_name | "
     fi
 fi
@@ -99,7 +114,7 @@ fi
 
 #https://stackoverflow.com/a/15748003
 if [ $n =  0 ]; then
-    echo 'How many times to run speed test? CTRL-C to cancel'
+    echo 'How many times to run speed test? 0 to cancel'
     read n
     #[ -n "$n" ] &&
     until [ "$n" -eq "$n" ]; ##if =then number https://stackoverflow.com/a/808740
