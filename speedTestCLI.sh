@@ -1,19 +1,4 @@
 #! /bin/bash
-
-# --2021-08-03 04:46:10--  https://raw.githubusercontent.com/sivel/speedtest-cli/
-# Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
-# Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443...
-#  connected.
-# HTTP request sent, awaiting response... 400 Bad Request
-# 2021-08-03 04:46:10 ERROR 400: Bad Request.
-
-# Script path with name: /mnt/p/Documents/GitHub/SpeedTestBashScript/speedTestCLI.sh
-# Script output with name: /mnt/p/Documents/GitHub/SpeedTestBashScript/speedTestCLI.txt
-
-
-# ./speedTestCLI.sh: line 76: [: missing `]'
-# ./speedTestCLI.sh: line 76: !=: command not found
-
 n=0
 find="";
 bint=0
@@ -22,24 +7,12 @@ searchOPTARGS="";
 year="";
 month="";
 command="";
+speedOutput="";
+testdate1="";
+testdate="";
+speedOutput="";
 
 #./speedTestCLI.sh -n 2
-# Change version of speedtest-cli installed to one that connects properly with server
-# https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c get-latest-release
-#
-
-get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
-}
-
-# Usage
-# $ get_latest_release "creationix/nvm"
-# v0.31.4
-
-# sudo wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O $(which speedtest-cli)
-sudo wget "https://raw.githubusercontent.com/sivel/speedtest-cli/"&& $ get_latest_release "sivel/speedtest-cli" && "/speedtest.py -O $(which speedtest-cli)"
 
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
 while getopts n:f: option
@@ -66,7 +39,6 @@ script_output_with_name="$script_path1/speedTestCLI.txt"
 echo "Script path with name: $script_path_with_name"
 echo "Script output with name: $script_output_with_name"
 echo
-echo
 
 if [ "$find" != "" ]; then
     echo "Searching for"
@@ -87,16 +59,16 @@ if [ "$find" != "" ]; then
 fi
 
 #grep -A 3 '20201' SpeedTestBashScript/speedTestCLI.txt | grep -B 3 'Upload' | grep -A 3 'Feb'
-
-if [ $year != "" || $month != "" ]; then
+command="";
+if [[ "$year" != "" || "$month" != "" ]]; then
     echo "Listing"
     echo $year" "
     echo $month" ";
-    if [ $year != "" ]; then
+    if [ $year!="" ]; then
         $command="grep -A 3 '$year' $script_output_with_name | "
     fi
     $command="$command grep -B 3 'Upload' | "
-    if [ $month != "" ]; then
+    if [ $month!="" ]; then
         $command="$command grep -A 3 '$month' $script_output_with_name | "
     fi
 fi
@@ -114,7 +86,7 @@ fi
 
 #https://stackoverflow.com/a/15748003
 if [ $n =  0 ]; then
-    echo 'How many times to run speed test? 0 to cancel'
+    echo 'How many times to run speed test? CTRL-C to cancel'
     read n
     #[ -n "$n" ] &&
     until [ "$n" -eq "$n" ]; ##if =then number https://stackoverflow.com/a/808740
@@ -133,10 +105,31 @@ for (( c=1; c<=$n; c++ ))
 do
     echo $c/$n&&date
     touch $script_output_with_name
-    date >> $script_output_with_name
-    speedtest-cli --simple >> $script_output_with_name
+    #date >> $script_output_with_name
+    #speedtest-cli --simple >> $script_output_with_name
+    speedOutput="";
+    speedOutput=$(time speedtest-cli --simple)
+    testdate=&date;
+    sizeOutput=${#speedOutput}
+    #echo $sizeOutput;
+    #echo $testdate >> $script_output_with_name
+    speedDateOutput="$testdate$speedOutput"
+    #echo "$speedDateOutput" >> $script_output_with_name
+
+    if [ ${#speedOutput} -ge 50 ]; then
+        echo &date >> $script_output_with_name
+        echo "$speedOutput";
+        echo "$speedOutput" >> "$script_output_with_name"
+
+        #echo "$speedDateOutput" >> $script_output_with_name
+        #echo "" >> $script_output_with_name
+        #$testdate$speedOutput >> $script_output_with_name
+
+    else echo "Error ${#speedOutput}: $speedOutput"
+    fi
+    echo
 done
 
 echo
-echo
-cat $script_output_with_name
+echo "less $script_output_with_name";
+#less $script_output_with_name
