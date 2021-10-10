@@ -13,6 +13,7 @@ testdate="";
 speedOutput="";
 
 #./speedTestCLI.sh -n 2
+#./speedTestCLI.sh -f Download
 
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
 while getopts n:f: option
@@ -81,7 +82,8 @@ PKG_OK=$(speedtest-cli --version | grep "Python")
 if [ "" = "$PKG_OK" ]; then
   echo Checking for $REQUIRED_PKG: $PKG_INFO_URL $PKG_OK
   echo "Please install $REQUIRED_PKG...";
-  sudo apt-get install $REQUIRED_PKG
+  sudo pamac install $REQUIRED_PKG
+  #apt-get
 fi
 
 #https://stackoverflow.com/a/15748003
@@ -131,5 +133,5 @@ do
 done
 
 echo
-echo "less $script_output_with_name";
-#less $script_output_with_name
+echo "nano $script_output_with_name";
+#less / nano $script_output_with_name
