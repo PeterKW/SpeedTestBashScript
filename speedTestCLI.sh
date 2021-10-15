@@ -15,6 +15,34 @@ speedOutput="";
 #./speedTestCLI.sh -n 2
 #./speedTestCLI.sh -f Download
 
+#Check Package dependencies installed
+
+# Easy way to check for dependencies
+#https://gist.github.com/montanaflynn/e1e754784749fd2aaca7
+checkfor () {
+    command -v $1 >/dev/null 2>&1 || { 
+        echo "$1 required"; #echo >&2 stderr
+        if [ "$(lsb_release -is)" == "ManjaroLinux" ]
+        then
+            echo "Installing $1..."
+            sudo pamac install -y $1
+        fi
+        if [ "$(lsb_release -is)" == "Debian" ]
+        then
+            echo "Installing $1..."
+            sudo apt install -y $1
+        fi
+        #exit 1; 
+    }
+}
+# example using an array of dependencies
+#rsync
+pkgArray=( "speedtest-cli" "grep" "nano" )
+for i in "${pkgArray[@]}"
+do
+    checkfor "$i"
+done
+
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
 while getopts n:f: option
 do
@@ -81,8 +109,8 @@ PKG_OK=$(speedtest-cli --version | grep "Python")
 
 if [ "" = "$PKG_OK" ]; then
   echo Checking for $REQUIRED_PKG: $PKG_INFO_URL $PKG_OK
-  echo "Please install $REQUIRED_PKG...";
-  sudo pamac install $REQUIRED_PKG
+#  echo "Please install $REQUIRED_PKG...";
+#  sudo pamac install $REQUIRED_PKG
   #apt-get
 fi
 
