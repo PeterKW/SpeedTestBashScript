@@ -22,21 +22,22 @@ speedOutput="";
 checkfor () {
     command -v $1 >/dev/null 2>&1 || { 
         echo "$1 required"; #echo >&2 stderr
-        if [ "$(lsb_release -is)" == "ManjaroLinux" ]
+        if [[ "$(which $1)" == "" ]]
         then
-            echo "Installing $1..."
-            sudo pamac install -y $1
-        fi
-        if [ "$(lsb_release -is)" == "Debian" ]
-        then
-            echo "Installing $1..."
-            sudo apt install -y $1
+            if [ "$(lsb_release -is)" == "ManjaroLinux" ]
+            then
+                echo "Installing $1..."
+                sudo pamac install --no-confirm $1
+            fi
+            if [ "$(lsb_release -is)" == "Debian" ]
+            then
+                echo "Installing $1..."
+                sudo apt install -y $1
+            fi
         fi
         #exit 1; 
     }
 }
-# example using an array of dependencies
-#rsync
 pkgArray=( "speedtest-cli" "grep" "nano" )
 for i in "${pkgArray[@]}"
 do
@@ -44,7 +45,7 @@ do
 done
 
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
-while getopts n:f: option
+while getopts n:f:b:a:y:m: option
 do
     case "${option}"
     in
