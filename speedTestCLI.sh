@@ -21,27 +21,41 @@ speedOutput="";
 #https://gist.github.com/montanaflynn/e1e754784749fd2aaca7
 checkfor () {
     command -v $1 >/dev/null 2>&1 || { 
-        echo "$1 required"; #echo >&2 stderr
-        if [[ "$(which $1)" == "" ]]
+        if [[ "$(which $1)" == "" ]] 
         then
             if [ "$(lsb_release -is)" == "ManjaroLinux" ]
-            then
-                echo "Installing $1..."
-                sudo pamac install --no-confirm $1
-            fi
-            if [ "$(lsb_release -is)" == "Debian" ]
-            then
-                echo "Installing $1..."
-                sudo apt install -y $1
-            fi
-        fi
+			then
+				echo "Installing $1..."
+				sudo pamac install --no-confirm $2
+			fi
+			if [ "$(lsb_release -is)" == "Debian" ]
+			then
+				echo "Installing $1..."
+				sudo apt install -y $2
+			fi
+		fi
         #exit 1; 
     }
 }
-pkgArray=( "speedtest-cli" "grep" "nano" )
-for i in "${pkgArray[@]}"
-do
-    checkfor "$i"
+
+# example using an array of dependencies
+#rsy
+declare -A pkgArray
+#pkgArray=( "speedtest-cli" "grep" "nano" )
+pkgArray[0,0]="speedtest-cli"
+pkgArray[0,1]="speedtest-cli"
+pkgArray[1,0]="grep"
+pkgArray[1,1]="grep"
+pkgArray[2,0]="nano"
+pkgArray[2,1]="nano"
+#pkgArray[3,0]=""
+#pkgArray[3,1]=""
+#pkgArray[4,0]=""
+#pkgArray[4,1]=""
+
+for (( i=0; i<${#pkgArray[@]}; i++ ))
+do 
+    checkfor "${pkgArray[$i,0]}" "${pkgArray[$i,1]}" ;
 done
 
 #https://www.lifewire.com/pass-arguments-to-bash-script-2200571
