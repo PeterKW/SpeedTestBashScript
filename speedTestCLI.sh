@@ -117,17 +117,17 @@ if [[ "$year" != "" || "$month" != "" ]]; then
     fi
 fi
 
-PKG_INFO_URL="github.com/sivel/speedtest-cli/blob/master/README.rst"
-REQUIRED_PKG="speedtest-cli"
+#PKG_INFO_URL="github.com/sivel/speedtest-cli/blob/master/README.rst"
+#REQUIRED_PKG="speedtest-cli"
 
-PKG_OK=$(speedtest-cli --version | grep "Python")
+#PKG_OK=$(speedtest-cli --version | grep "Python")
 
-if [ "" = "$PKG_OK" ]; then
-  echo Checking for $REQUIRED_PKG: $PKG_INFO_URL $PKG_OK
+#if [ "" = "$PKG_OK" ]; then
+#  echo Checking for $REQUIRED_PKG: $PKG_INFO_URL $PKG_OK
 #  echo "Please install $REQUIRED_PKG...";
 #  sudo pamac install $REQUIRED_PKG
   #apt-get
-fi
+#fi
 
 #https://stackoverflow.com/a/15748003
 if [ $n =  0 ]; then
